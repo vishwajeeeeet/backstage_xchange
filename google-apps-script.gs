@@ -9,6 +9,9 @@ function doPost(event) {
   if (payload.website) {
     return htmlResponse({ ok: true, requestId: requestId });
   }
+  if (payload.formType === 'booking') {
+    return saveBooking(payload, requestId);
+  }
 
   var fields = {
     name: cleanField(payload.name, 120),
@@ -59,6 +62,27 @@ function doPost(event) {
     if (lockAcquired) lock.releaseLock();
   }
 
+  return htmlResponse({ ok: true, requestId: requestId });
+}
+
+function saveBooking(payload, requestId) {
+  var fields = { name: cleanField(payload.name, 120), email: cleanField(payload.email, 254), phone: cleanField(payload.phone, 40), bookingType: cleanField(payload.bookingType, 100), eventDate: cleanField(payload.eventDate, 10), details: cleanField(payload.details, 5000) };
+  var bookingTypes = ['VIP Event', 'Artist Booking', 'Night Club Entry', 'Luxury Party', 'Private Event'];
+  if (!fields.name || !fields.email || !fields.phone || bookingTypes.indexOf(fields.bookingType) === -1 || !/^\d{4}-\d{2}-\d{2}$/.test(fields.eventDate) || !fields.details || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) return htmlResponse({ ok: false, message: 'Please check the required booking fields.', requestId: requestId });
+  var lock = LockService.getScriptLock();
+  var lockAcquired = false;
+  try {
+    lock.waitLock(10000); lockAcquired = true;
+    var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var sheet = spreadsheet.getSheetByName('Bookings');
+    if (!sheet) sheet = spreadsheet.insertSheet('Bookings');
+    if (sheet.getLastRow() === 0) sheet.appendRow(['Received at', 'Name', 'Email', 'Phone', 'Booking type', 'Event date', 'Additional details']);
+    sheet.appendRow([new Date(), safeCell(fields.name), safeCell(fields.email), safeCell(fields.phone), safeCell(fields.bookingType), fields.eventDate, safeCell(fields.details)]);
+    SpreadsheetApp.flush();
+  } catch (error) {
+    console.error('Unable to save booking:', error && error.stack ? error.stack : error);
+    return htmlResponse({ ok: false, message: 'The booking request could not be saved. Please try again later.', requestId: requestId });
+  } finally { if (lockAcquired) lock.releaseLock(); }
   return htmlResponse({ ok: true, requestId: requestId });
 }
 
