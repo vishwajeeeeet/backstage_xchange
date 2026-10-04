@@ -8,11 +8,11 @@ Open `index.html` in a browser. The site uses static HTML, CSS, and JavaScript a
 
 ## Connect contact inquiries and bookings to Google Sheets
 
-The contact form stores submissions in a Google Sheet through a Google Apps Script web app:
+The contact and booking forms store submissions in a Google Sheet through a Google Apps Script web app:
 
-1. Create or open a Google Sheet, then choose **Extensions → Apps Script**.
+1. Create or open a Google Sheet, then choose **Extensions > Apps Script**.
 2. Replace the editor contents with `google-apps-script.gs` and save the project.
-3. Choose **Deploy → New deployment**, select **Web app**, set **Execute as** to yourself, and allow access to **Anyone**. Deploy and authorize the requested spreadsheet access.
+3. Choose **Deploy > New deployment**, select **Web app**, set **Execute as** to yourself, and allow access to **Anyone**. Deploy and authorize the requested spreadsheet access.
 4. Copy the deployed web app URL (it ends in `/exec`) into `google-sheets-config.js` as the value of `window.BACKSTAGE_SHEETS_ENDPOINT`. The configured spreadsheet is [Backstage Xchange Inquiries](https://docs.google.com/spreadsheets/d/1ESsX-0c370PfQAYQKa4sjvRbCSohCl0j2mqctBzANm4/edit).
 5. Serve the site over HTTPS and test the forms. Contact submissions appear in the `Inquiries` tab, and booking requests appear in the `Bookings` tab; the script creates both tabs automatically.
 
