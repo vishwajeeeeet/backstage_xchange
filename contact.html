@@ -661,7 +661,7 @@
         <form id="bookingForm">
             <div class="input-group"><input type="text" name="name" maxlength="120" autocomplete="name" required><label>Full Name</label></div>
             <div class="input-group"><input type="email" name="email" maxlength="254" autocomplete="email" required><label>Email Address</label></div>
-            <div class="input-group"><input type="tel" name="phone" maxlength="40" autocomplete="tel" pattern="[+0-9(). -]{7,40}" title="Enter a valid phone number using 7 to 15 digits." required><label>Phone Number</label></div>
+            <div class="input-group"><input type="tel" name="phone" maxlength="40" autocomplete="tel" pattern="[0-9+\s.\(\)\-]{7,40}" title="Enter a valid phone number using 7 to 15 digits." required><label>Phone Number</label></div>
             <div class="input-group"><select name="bookingType" required><option value="" disabled selected>Select Booking Type</option><option>VIP Event</option><option>Artist Booking</option><option>Night Club Entry</option><option>Luxury Party</option><option>Private Event</option></select></div>
             <div class="input-group"><input type="date" name="eventDate" required></div>
             <div class="input-group textarea-group"><textarea name="details" maxlength="5000" required></textarea><label>Additional Details</label></div>
