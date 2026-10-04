@@ -2,12 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('.navbar');
     if (navbar) {
         window.addEventListener('scroll', () => {
-            navbar.style.background = window.scrollY > 50
-                ? 'rgba(255,255,255,0.95)'
-                : 'rgba(255,255,255,0.65)';
+            navbar.style.background = window.scrollY > 50 ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.65)';
         }, { passive: true });
     }
-
     const form = document.getElementById('contactForm');
     if (form) {
         const status = document.getElementById('contactFormStatus');
@@ -60,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
     const bookingForm = document.getElementById('bookingForm');
     if (!bookingForm) return;
     const bookingStatus = document.getElementById('bookingFormStatus');
