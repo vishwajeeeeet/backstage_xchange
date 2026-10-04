@@ -64,6 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
     bookingForm.addEventListener('submit', async event => {
         event.preventDefault();
         if (!bookingStatus) return;
+        const phone = bookingForm.querySelector('[name="phone"]').value.trim();
+        const phoneDigits = phone.replace(/\D/g, '');
+        if (!/^[+0-9().\s-]{7,40}$/.test(phone) ||
+            phoneDigits.length < 7 || phoneDigits.length > 15) {
+            bookingStatus.textContent = 'Please enter a valid phone number using 7 to 15 digits.';
+            bookingStatus.dataset.state = 'error';
+            bookingForm.querySelector('[name="phone"]').focus();
+            return;
+        }
+
         const endpoint = window.BACKSTAGE_SHEETS_ENDPOINT;
         if (!endpoint) {
             bookingStatus.textContent = 'The booking form is not configured yet. Please contact us by phone or email.';
