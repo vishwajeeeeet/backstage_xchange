@@ -1,3 +1,29 @@
+function isValidEmailAddress(value) {
+    const email = value.trim();
+    const atIndex = email.lastIndexOf('@');
+    if (atIndex < 1 || atIndex > 64 || email.length > 254) return false;
+    const localPart = email.slice(0, atIndex);
+    const domain = email.slice(atIndex + 1);
+    if (!/^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+$/.test(localPart) || localPart.startsWith('.') || localPart.endsWith('.') || localPart.includes('..')) return false;
+    const labels = domain.split('.');
+    if (labels.length < 2 || labels.some(label => label.length < 1 || label.length > 63 || !/^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$/.test(label))) return false;
+    return /^[A-Za-z]{2,63}$/.test(labels[labels.length - 1]) || /^xn--[A-Za-z0-9-]{2,59}$/i.test(labels[labels.length - 1]);
+}
+
+function isValidPhoneNumber(value) {
+    const phone = value.trim();
+    if (!/^\+?[0-9().\s-]+$/.test(phone)) return false;
+    const digits = phone.replace(/\D/g, '');
+    if (/^(\d)\1+$/.test(digits)) return false;
+    if (phone.startsWith('+')) {
+        if (digits.startsWith('91')) return digits.length === 12 && /^[6-9]\d{9}$/.test(digits.slice(2));
+        return /^[1-9]\d{6,14}$/.test(digits);
+    }
+    if (digits.length === 10) return /^[6-9]\d{9}$/.test(digits);
+    if (digits.length === 11 && digits.startsWith('0')) return /^[6-9]\d{9}$/.test(digits.slice(1));
+    return digits.length === 12 && digits.startsWith('91') && /^[6-9]\d{9}$/.test(digits.slice(2));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('.navbar');
     if (navbar) {
@@ -65,10 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         if (!bookingStatus) return;
         const phone = bookingForm.querySelector('[name="phone"]').value.trim();
-        const phoneDigits = phone.replace(/\D/g, '');
-        if (!/^[+0-9().\s-]{7,40}$/.test(phone) ||
-            phoneDigits.length < 7 || phoneDigits.length > 15) {
-            bookingStatus.textContent = 'Please enter a valid phone number using 7 to 15 digits.';
+        const emailField = bookingForm.querySelector('[name="email"]');
+        if (!isValidEmailAddress(emailField.value)) {
+            bookingStatus.textContent = 'Please enter a valid email address, such as name@example.com.';
+            bookingStatus.dataset.state = 'error';
+            emailField.focus();
+            return;
+        }
+        if (!isValidPhoneNumber(phone)) {
+            bookingStatus.textContent = 'Enter a valid Indian mobile number (10 digits beginning 6-9) or an international number with its + country code.';
             bookingStatus.dataset.state = 'error';
             bookingForm.querySelector('[name="phone"]').focus();
             return;
