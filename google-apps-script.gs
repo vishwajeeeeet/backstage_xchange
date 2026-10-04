@@ -68,7 +68,8 @@ function doPost(event) {
 function saveBooking(payload, requestId) {
   var fields = { name: cleanField(payload.name, 120), email: cleanField(payload.email, 254), phone: cleanField(payload.phone, 40), bookingType: cleanField(payload.bookingType, 100), eventDate: cleanField(payload.eventDate, 10), details: cleanField(payload.details, 5000) };
   var bookingTypes = ['VIP Event', 'Artist Booking', 'Night Club Entry', 'Luxury Party', 'Private Event'];
-  if (!fields.name || !fields.email || !fields.phone || bookingTypes.indexOf(fields.bookingType) === -1 || !/^\d{4}-\d{2}-\d{2}$/.test(fields.eventDate) || !fields.details || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) return htmlResponse({ ok: false, message: 'Please check the required booking fields.', requestId: requestId });
+  var phoneDigits = fields.phone.replace(/\D/g, '');
+  if (!fields.name || !fields.email || !/^[+0-9(). -]{7,40}$/.test(fields.phone) || phoneDigits.length < 7 || phoneDigits.length > 15 || bookingTypes.indexOf(fields.bookingType) === -1 || !isValidEventDate(fields.eventDate) || !fields.details || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) return htmlResponse({ ok: false, message: 'Please check your name, email, phone number, booking type, event date, and details.', requestId: requestId });
   var lock = LockService.getScriptLock();
   var lockAcquired = false;
   try {
@@ -84,6 +85,12 @@ function saveBooking(payload, requestId) {
     return htmlResponse({ ok: false, message: 'The booking request could not be saved. Please try again later.', requestId: requestId });
   } finally { if (lockAcquired) lock.releaseLock(); }
   return htmlResponse({ ok: true, requestId: requestId });
+}
+
+function isValidEventDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  var date = new Date(value + 'T00:00:00Z');
+  return !isNaN(date.getTime()) && Utilities.formatDate(date, 'UTC', 'yyyy-MM-dd') === value;
 }
 
 function cleanField(value, maxLength) {
