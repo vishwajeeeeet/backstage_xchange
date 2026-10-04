@@ -7,6 +7,7 @@
     <title>Contact | Backstage Xchange</title>
 
     <link rel="stylesheet" href="contact.css">
+    <link rel="stylesheet" href="site-enhancements.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
@@ -420,7 +421,7 @@
         margin-bottom: 10px !important;
         letter-spacing: 1px !important;
     }
-    .footer-logo span { color: #42c8f5 !important; }
+    .footer-logo span { color: #ff7a00 !important; }
 
     .footer-box p {
         font-family: 'Poppins', sans-serif !important;
@@ -632,12 +633,16 @@
     </div>
     <div class="contact-form-container">
         <form id="contactForm">
-            <div class="input-group"><input type="text" id="name" required><label>Your Name</label></div>
-            <div class="input-group"><input type="email" id="email" required><label>Email Address</label></div>
-            <div class="input-group"><input type="text" id="subject" required><label>Subject</label></div>
-            <div class="input-group textarea-group"><textarea id="message" required></textarea><label>Your Message</label></div>
+            <div class="input-group"><input type="text" id="name" name="name" maxlength="120" autocomplete="name" required><label>Your Name</label></div>
+            <div class="input-group"><input type="email" id="email" name="email" maxlength="254" autocomplete="email" required><label>Email Address</label></div>
+            <div class="input-group"><input type="text" id="subject" name="subject" maxlength="200" required><label>Subject</label></div>
+            <div class="input-group textarea-group"><textarea id="message" name="message" maxlength="5000" required></textarea><label>Your Message</label></div>
+            <div class="form-trap" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+            <input id="submissionId" name="submissionId" type="hidden">
             <button type="submit">Send Message</button>
+            <p class="form-status" id="contactFormStatus" role="status" aria-live="polite"></p>
         </form>
+        <iframe name="googleSheetsResponse" title="Contact form response" hidden></iframe>
     </div>
 </section>
 
@@ -709,6 +714,7 @@
     </div>
 </footer>
 
+<script src="google-sheets-config.js" defer></script>
 <script src="contact.js" defer></script>
 </body>
 </html>

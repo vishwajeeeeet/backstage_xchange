@@ -29,7 +29,7 @@ h1,h2,h3{
 }
 
 body{
-    background:#f5f7ff;
+    background:#fffaf5;
     color:#111;
 }
 /* =========================
@@ -212,7 +212,7 @@ body{
 }
 
 .contact-info span{
-    color:#4262ff;
+    color:#ff7a00;
     letter-spacing:4px;
     font-weight:600;
 }
@@ -265,7 +265,7 @@ body{
 
     border-radius:14px;
 
-    background:#f5f7ff;
+    background:#fff7ed;
 
     font-size:16px;
 }
@@ -302,7 +302,7 @@ body{
 
     font-size:13px;
 
-    color:#4262ff;
+    color:#ff7a00;
 }
 
 button{
@@ -314,7 +314,7 @@ button{
 
     border-radius:14px;
 
-    background:#4262ff;
+    background:#ff7a00;
 
     color:white;
 
@@ -380,7 +380,7 @@ button:hover{
 
 .map-section {
     padding: 100px 8%;
-    background: linear-gradient(to bottom, #f8efef, #f5f4f4);
+    background: linear-gradient(to bottom, #fff7ed, #ffffff);
 }
 
 .map-header {
@@ -392,7 +392,7 @@ button:hover{
 
 .map-header .section-tag {
     display: inline-block;
-    color: #2d76d4;
+    color: #ff7a00;
     font-size: 1rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -457,7 +457,7 @@ button:hover{
 }
 
 .booking-info span{
-    color:#4262ff;
+    color:#ff7a00;
     letter-spacing:4px;
     font-weight:600;
 }
@@ -510,7 +510,7 @@ button:hover{
 
     border-radius:14px;
 
-    background:#f5f7ff;
+    background:#fff7ed;
 
     font-size:16px;
 }
@@ -548,7 +548,7 @@ button:hover{
 
     font-size:13px;
 
-    color:#4262ff;
+    color:#ff7a00;
 }
 
 button{
@@ -560,7 +560,7 @@ button{
 
     border-radius:14px;
 
-    background:#4262ff;
+    background:#ff7a00;
 
     color:white;
 
@@ -689,7 +689,7 @@ button:hover{
 }
 
 .footer-logo span{
-    color: #42c8f5;
+    color: #ff7a00;
 }
 
 /* TEXT */
@@ -737,7 +737,7 @@ button:hover{
 }
 
 .footer-box ul li a:hover{
-    color: #42c8f5;
+    color: #ff7a00;
 
     transform: translateX(5px);
 }
@@ -774,9 +774,9 @@ button:hover{
 }
 
 .social-icons a:hover{
-    background: #42c8f5;
+    background: #ff7a00;
 
-    border-color: #42c8f5;
+    border-color: #ff7a00;
 
     transform: translateY(-5px);
 }
@@ -832,4 +832,60 @@ button:hover{
         font-size: 24px;
     }
 
+}
+
+.form-trap {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.form-status {
+    min-height: 1.5em;
+    margin-top: 14px;
+    line-height: 1.5;
+}
+
+.form-status[data-state="success"] {
+    color: #166534;
+}
+
+.form-status[data-state="error"] {
+    color: #b91c1c;
+}
+
+.form-status[data-state="pending"] {
+    color: #475569;
+}
+
+#contactForm button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+    transform: none;
+}
+
+.contact-form-container,
+.booking-form-container {
+    border: 1px solid #ffedd5;
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.16);
+}
+
+.footer-logo span,
+.footer-box ul li a:hover {
+    color: #ff7a00;
+}
+
+.social-icons a:hover {
+    background: #ff7a00;
+    color: #fff;
+    border-color: #ff7a00;
 }

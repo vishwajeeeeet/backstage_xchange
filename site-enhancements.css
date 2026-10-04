@@ -1,0 +1,86 @@
+/* Shared finishing rules: responsive images, keyboard focus and consistent sizing. */
+:root {
+  --brand-accent: #ff7a00;
+  --brand-accent-dark: #e06c00;
+  --brand-ink: #0f172a;
+  --brand-muted: #475569;
+  --brand-surface: #fff7ed;
+}
+
+::selection {
+  color: #fff;
+  background: var(--brand-accent);
+}
+
+img,
+iframe {
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+:focus-visible {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 3px;
+}
+
+.navbar .nav-links a:hover,
+.navbar .nav-links a.active,
+.nav-socials a:hover,
+.footer a:hover {
+  color: var(--brand-accent) !important;
+}
+
+.navbar .nav-links a::after {
+  background: var(--brand-accent) !important;
+}
+
+button[type="submit"],
+.btn,
+.cta-buttons .primary-btn {
+  transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+button[type="submit"]:hover,
+.btn:hover,
+.cta-buttons .primary-btn:hover {
+  box-shadow: 0 8px 20px rgba(255, 122, 0, 0.22);
+}
+
+@media (max-width: 768px) {
+  .section-title,
+  .benefits-header,
+  .process-header,
+  .why-header,
+  .faq-heading,
+  .blog-heading,
+  .map-header {
+    max-width: 100%;
+  }
+
+  .section-title h2,
+  .benefits-header h2,
+  .process-header h2,
+  .why-header h2,
+  .faq-heading h2,
+  .about-content h2,
+  .testimonials h2,
+  .gallery-section h2,
+  .booking h2 {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
