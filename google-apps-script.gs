@@ -1,3 +1,5 @@
+var SPREADSHEET_ID = '1ESsX-0c370PfQAYQKa4sjvRbCSohCl0j2mqctBzANm4';
+
 function doPost(event) {
   var payload = event.parameter || {};
   var requestId = /^[a-zA-Z0-9-]{1,100}$/.test(payload.submissionId || '')
@@ -25,9 +27,12 @@ function doPost(event) {
   }
 
   var lock = LockService.getScriptLock();
-  lock.waitLock(10000);
+  var lockAcquired = false;
   try {
-    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    lock.waitLock(10000);
+    lockAcquired = true;
+
+    var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
     var sheet = spreadsheet.getSheetByName('Inquiries');
     if (!sheet) {
       sheet = spreadsheet.insertSheet('Inquiries');
@@ -42,8 +47,16 @@ function doPost(event) {
       safeCell(fields.subject),
       safeCell(fields.message)
     ]);
+    SpreadsheetApp.flush();
+  } catch (error) {
+    console.error('Unable to save inquiry:', error && error.stack ? error.stack : error);
+    return htmlResponse({
+      ok: false,
+      message: 'The inquiry could not be saved. Please try again later.',
+      requestId: requestId
+    });
   } finally {
-    lock.releaseLock();
+    if (lockAcquired) lock.releaseLock();
   }
 
   return htmlResponse({ ok: true, requestId: requestId });
@@ -61,6 +74,6 @@ function safeCell(value) {
 function htmlResponse(data) {
   var message = JSON.stringify(data).replace(/</g, '\\u003c');
   return HtmlService
-    .createHtmlOutput('<!doctype html><script>window.parent.postMessage(' + message + ', "*");</script>')
+    .createHtmlOutput('<!doctype html><script>window.top.postMessage(' + message + ', "*");</script>')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
