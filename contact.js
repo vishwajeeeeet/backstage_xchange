@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 function onMessage(messageEvent) {
                     const trustedOrigin = messageEvent.origin.endsWith('.googleusercontent.com');
-                    if (messageEvent.source !== responseFrame.contentWindow ||
-                        !trustedOrigin ||
+                    if (!trustedOrigin ||
+                        !messageEvent.data ||
                         messageEvent.data?.requestId !== requestId) {
                         return;
                     }
